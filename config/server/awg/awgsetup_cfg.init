@@ -1,0 +1,56 @@
+# Конфигурация установки AmneziaWG (Авто-генерация)
+# Используется скриптами установки и управления
+export OS_ID='ubuntu'
+export OS_VERSION='24.04'
+export OS_CODENAME='noble'
+export AWG_PORT=39743
+export AWG_TUNNEL_SUBNET='10.9.9.1/24'
+export DISABLE_IPV6=1
+export ALLOWED_IPS_MODE=1
+export ALLOWED_IPS='0.0.0.0/0'
+export CLIENT_ISOLATION=0
+export CLIENT_ISOLATION_NET=''
+export AWG_ENDPOINT=''
+export AWG_SERVER_NAME='kintoki'
+export AWG_MTU=1280
+# Параметры обфускации
+export AWG_Jc=3
+export AWG_Jmin=40
+export AWG_Jmax=100
+export AWG_S1=18
+export AWG_S2=78
+export AWG_S3=44
+export AWG_S4=5
+export AWG_H1='246489850-301993439'
+export AWG_H2='482062957-898791665'
+export AWG_H3='1097909626-1327664614'
+export AWG_H4='1484166245-1600095834'
+export AWG_I1='<r 2><b 0x858000010002000000001d><rc 29><b 0x0463646e730669636c6f756403636f6d0000010001c00c000100010000038400049f005049c00c00010001000003840004bab86e3e>'
+# I1, закреплённый флагом --i1. Пусто - I1 выбирает установщик.
+export AWG_I1_PIN=''
+export AWG_I2=''
+export AWG_I3=''
+export AWG_I4=''
+export AWG_I5=''
+export AWG_PRESET='default'
+export NO_TWEAKS=0
+export KEEP_PACKAGES=1
+export NO_CPS=0
+export NO_PREBUILT=0
+# IPv6 устройств клиентов напрямую, мимо туннеля (только режим 2). 0 - через туннель.
+export CLIENT_IPV6_DIRECT=0
+# DNS для НОВЫХ клиентов (IP через запятую). Пусто - 1.1.1.1, 1.0.0.1.
+export CLIENT_DNS=''
+export AWG_APPLY_MODE='syncconf'
+export ALLOW_IPV6_TUNNEL=0
+export IPV6_SUBNET='fddd:2c4:2c4:2c4::/64'
+export SERVER_HAS_NATIVE_IPV6=0
+# Как выбрано поколение (default - по умолчанию, explicit - флагом; пусто - до
+# v6.0.0) и код причины, если умолчание 3.1 уступило 2.0. Используются до конца
+# установки и в итоговом отчёте.
+export AWG_PROTOCOL_SOURCE='explicit'
+export AWG_PROTOCOL_FALLBACK=''
+export AWG_CPA=''
+# Поколение протокола этой установки. Не редактируйте вручную: другое поколение
+# требует перевыпуска всех клиентских профилей. Отсутствие поля читается как 2.0.
+export AWG_PROTOCOL='2.0'
