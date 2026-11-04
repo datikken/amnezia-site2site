@@ -3,6 +3,7 @@ FROM php:8.3-fpm-bookworm
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
         $PHPIZE_DEPS \
+        composer \
         libfreetype6-dev \
         libicu-dev \
         libjpeg62-turbo-dev \
@@ -21,8 +22,6 @@ RUN apt-get update \
         pdo_sqlite \
         zip \
     && rm -rf /var/lib/apt/lists/*
-
-COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
 WORKDIR /var/www/html
 
