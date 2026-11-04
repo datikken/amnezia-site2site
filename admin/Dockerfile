@@ -1,22 +1,15 @@
-FROM php:8.3-fpm-alpine
+FROM php:8.3-fpm-bookworm
 
-RUN apk add --no-cache \
-        freetype \
-        icu-libs \
-        libjpeg-turbo \
-        libpng \
-        libzip \
-        oniguruma \
-        sqlite-libs \
-    && apk add --no-cache --virtual .build-deps \
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends \
         $PHPIZE_DEPS \
-        freetype-dev \
-        icu-dev \
-        libjpeg-turbo-dev \
+        libfreetype6-dev \
+        libicu-dev \
+        libjpeg62-turbo-dev \
+        libonig-dev \
         libpng-dev \
+        libsqlite3-dev \
         libzip-dev \
-        oniguruma-dev \
-        sqlite-dev \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install -j"$(nproc)" \
         bcmath \
@@ -27,7 +20,7 @@ RUN apk add --no-cache \
         opcache \
         pdo_sqlite \
         zip \
-    && apk del .build-deps
+    && rm -rf /var/lib/apt/lists/*
 
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
