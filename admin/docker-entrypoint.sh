@@ -8,7 +8,7 @@ if [ ! -f composer.json ]; then
 fi
 
 if ! grep -q '"easycorp/easyadmin-bundle"' composer.json; then
-    composer require --no-interaction easycorp/easyadmin-bundle doctrine/orm-pack symfony/twig-bundle
+    composer require --no-interaction easycorp/easyadmin-bundle symfony/orm-pack symfony/twig-bundle
 fi
 
 if [ ! -f .admin-scaffold-installed ]; then

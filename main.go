@@ -23,18 +23,11 @@ func run(args []string) error {
 		return fmt.Errorf("usage: %s [admin-setup]", os.Args[0])
 	}
 
-	if err := os.MkdirAll("admin/app", 0755); err != nil {
-		return fmt.Errorf("create admin application directory: %w", err)
+	if err := runDockerCompose("up", "-d", "--build"); err != nil {
+		return fmt.Errorf("start Symfony EasyAdmin containers: %w", err)
 	}
 
-	if err := runDockerCompose("run", "--build", "--rm", "app", "sh", "/usr/local/bin/admin-bootstrap"); err != nil {
-		return fmt.Errorf("bootstrap Laravel and Filament: %w", err)
-	}
-	if err := runDockerCompose("up", "-d"); err != nil {
-		return fmt.Errorf("start admin containers: %w", err)
-	}
-
-	fmt.Println("Admin panel is available at http://localhost:8080/admin")
+	fmt.Println("Symfony EasyAdmin is available at http://localhost:8080/admin")
 	return nil
 }
 
