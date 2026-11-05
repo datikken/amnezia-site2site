@@ -9,3 +9,4 @@
 /vendor/
 ###< symfony/framework-bundle ###
 /admin/node_modules
+awg-admin

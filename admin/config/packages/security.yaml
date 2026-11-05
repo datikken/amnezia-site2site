@@ -5,13 +5,10 @@ security:
 
     # https://symfony.com/doc/current/security.html#loading-the-user-the-user-provider
     providers:
-        users_in_memory:
-            memory:
-                users:
-                    admin:
-                        password: '$2y$13$fF4li0wjEST6OIYyx7pXVu5gSjHf01Ty3vWCyf28NfzvnJ6IpNLq6' # "admin"
-                        roles: ['ROLE_ADMIN']
-
+        app_user_provider:
+            entity:
+                class: App\Entity\User
+                property: email
     firewalls:
         dev:
             # Ensure dev tools and static assets are always allowed
@@ -19,14 +16,17 @@ security:
             security: false
         main:
             lazy: true
-            provider: users_in_memory
+            provider: app_user_provider
             form_login:
-                login_path: admin
-                check_path: admin
+                login_path: app_login
+                check_path: app_login
+                default_target_path: admin
+                always_use_default_target_path: true
                 enable_csrf: true
             logout:
-                path: admin_logout
-                target: admin
+                path: app_logout
+                target: app_login
+                invalidate_session: true
 
             # Activate different ways to authenticate:
             # https://symfony.com/doc/current/security.html#the-firewall
@@ -36,11 +36,10 @@ security:
 
     # Note: Only the *first* matching rule is applied
     access_control:
-        # EasyAdmin renders its own login form to anonymous users on the dashboard
-        # route, so we must NOT block ^/admin here (that would cause a redirect loop).
-        # Authorization is enforced per-controller via #[IsGranted('ROLE_ADMIN')].
-        # Add rules only for other paths, e.g.:
-        # - { path: ^/profile, roles: ROLE_USER }
+        - { path: ^/login, roles: PUBLIC_ACCESS }
+        - { path: ^/register, roles: PUBLIC_ACCESS }
+        - { path: ^/logout, roles: PUBLIC_ACCESS }
+        - { path: ^/admin, roles: ROLE_ADMIN }
 when@test:
     security:
         password_hashers:
