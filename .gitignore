@@ -1,1 +1,3 @@
-/admin/vendor
+/admin/app/vendor
+/admin/app/var
+/admin/app/public
