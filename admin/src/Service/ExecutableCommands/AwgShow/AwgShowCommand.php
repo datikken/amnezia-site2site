@@ -1,6 +1,8 @@
 <?php
 
-namespace App\Service\ExecutableCommands;
+namespace App\Service\ExecutableCommands\AwgShow;
+
+use App\Service\ExecutableCommands\Command;
 
 final class AwgShowCommand extends Command
 {
