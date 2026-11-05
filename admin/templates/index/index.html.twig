@@ -32,7 +32,7 @@
         {% else %}
             {# desktop: max 3 columns, but never more columns than there are cards #}
             {% set desktopCols = (peers|length >= 3) ? 'xl:grid-cols-3' : (peers|length == 2 ? 'xl:grid-cols-2' : 'xl:grid-cols-1') %}
-            <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 {{ desktopCols }}">
+            <div class="grid grid-cols-1 gap-4 lg:grid-cols-2 sm:gap-5 {{ desktopCols }}">
                 {% for peer in peers %}
                     {{ include('index/_peer_card.html.twig', { peer: peer }) }}
                 {% endfor %}
