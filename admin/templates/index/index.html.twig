@@ -4,10 +4,10 @@
 
 {% block body %}
 <div class="min-h-screen bg-slate-950 text-slate-100 antialiased text-lg sm:text-base">
-    <div class="w-full max-w-3xl mx-auto px-0 sm:px-6 py-6 sm:py-10">
+    <div class="w-full mx-auto px-0 py-6 sm:py-10">
 
                 {# ---- Header ---- #}
-        <header class="mb-6 sm:mb-8 px-4 sm:px-0 flex items-end justify-between gap-4 flex-wrap">
+        <header class="mb-6 sm:mb-8 px-4 flex items-end justify-between gap-4 flex-wrap">
             <div>
                 <h1 class="text-3xl font-bold tracking-tight">AmneziaWG</h1>
                 <p class="text-slate-400 mt-1">Connected peers</p>
@@ -19,11 +19,11 @@
         </header>
 
         {% if peers is empty %}
-                        <div class="mx-4 sm:mx-0 rounded-xl border border-slate-800 bg-slate-900/60 p-10 text-center text-slate-400">
+                        <div class="mx-4 rounded-xl border border-slate-800 bg-slate-900/60 p-10 text-center text-slate-400">
                 No peers found on this interface.
             </div>
         {% else %}
-            <div class="grid grid-cols-1 gap-0 sm:gap-5">
+            <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-0">
                 {% for peer in peers %}
                     {{ include('index/_peer_card.html.twig', { peer: peer }) }}
                 {% endfor %}
