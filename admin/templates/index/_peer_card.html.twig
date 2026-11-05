@@ -1,7 +1,7 @@
 {% set handshake = peer.latest_handshake|default('') %}
 {% set transfer = peer.transfer|default('') %}
 
-<article class="flex flex-col bg-slate-900/70 p-5 transition-colors hover:bg-slate-900 sm:p-6">
+<article class="flex flex-col rounded-2xl border border-slate-800 bg-slate-900/70 p-5 transition-colors hover:bg-slate-900 sm:p-6">
     {# card header: public key #}
     <div class="mb-4 min-w-0 border-b border-slate-800 pb-4">
         <div class="text-[0.7rem] font-semibold uppercase tracking-widest text-slate-500">Public key</div>
@@ -9,6 +9,7 @@
                 {{ peer.public_key|default('—') }}
             </code>
         </div>
+
     {# card body: field list #}
     <dl class="flex flex-col gap-2.5 text-sm">
         {% if peer.endpoint is defined %}
