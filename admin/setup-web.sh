@@ -51,6 +51,10 @@ if ! is_installed acl || ! command -v setfacl >/dev/null 2>&1; then
     missing_packages+=(acl)
 fi
 
+if ! is_installed libcap2-bin || ! command -v setcap >/dev/null 2>&1; then
+    missing_packages+=(libcap2-bin)
+fi
+
 apt-get update
 if (( ${#missing_packages[@]} > 0 )); then
     log "Installing missing packages: ${missing_packages[*]}"
@@ -122,6 +126,21 @@ if (!version_compare(PHP_VERSION, $argv[1], ">=")) {
 ' "${required_php_version}" \
     || fail "Installed PHP does not satisfy composer.json."
 log "Using PHP ${installed_php_version} for CLI and PHP-FPM (composer.json requires >= ${required_php_version})."
+
+awg_binary="$(command -v awg || true)"
+[[ -n "${awg_binary}" ]] || fail "The awg command was not found; install AmneziaWG tools first."
+awg_binary="$(realpath -e -- "${awg_binary}")"
+[[ "${awg_binary}" =~ ^/[A-Za-z0-9._/-]+$ ]] \
+    || fail "Unsupported awg binary path: ${awg_binary}"
+
+log "Granting CAP_NET_ADMIN to ${awg_binary} so www-data can run 'awg show' directly."
+setcap cap_net_admin+ep "${awg_binary}" \
+    || fail "Could not grant CAP_NET_ADMIN to ${awg_binary}."
+getcap "${awg_binary}" | grep -Fq 'cap_net_admin=ep' \
+    || fail "CAP_NET_ADMIN was not set on ${awg_binary}."
+if ! runuser -u www-data -- "${awg_binary}" show >/dev/null; then
+    fail "Could not run 'awg show' as www-data after granting CAP_NET_ADMIN."
+fi
 
 if ! read -r -p "Absolute path to the application's public directory: " public_dir; then
     fail "Could not read the public-directory path."
