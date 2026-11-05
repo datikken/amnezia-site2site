@@ -26,7 +26,6 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
                 {% for peer in peers %}
                     {% set handshake = peer.latest_handshake|default('') %}
-                    {% set is_up = handshake is not empty and handshake|lower != 'never' %}
                     {% set transfer = peer.transfer|default('') %}
 
                     <article class="rounded-xl border border-slate-800 bg-slate-900/60 shadow-lg shadow-black/20 overflow-hidden">
@@ -38,13 +37,6 @@
                                     {{ peer.public_key|default('—') }}
                                 </code>
                             </div>
-                            <span class="shrink-0 inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-medium
-                                {{ is_up
-                                    ? 'bg-emerald-500/10 text-emerald-300 ring-1 ring-emerald-500/30'
-                                    : 'bg-slate-700/40 text-slate-400 ring-1 ring-slate-700' }}">
-                                <span class="h-1.5 w-1.5 rounded-full {{ is_up ? 'bg-emerald-400' : 'bg-slate-500' }}"></span>
-                                {{ is_up ? 'Up' : 'Idle' }}
-                            </span>
                         </div>
 
                         {# card body: field grid #}
