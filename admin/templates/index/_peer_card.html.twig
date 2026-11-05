@@ -13,49 +13,49 @@
     {# card body: field list #}
     <dl class="flex flex-col gap-2.5 text-sm">
         {% if peer.endpoint is defined %}
-            <div class="flex items-baseline justify-between gap-4">
+            <div class="flex items-baseline gap-4">
                 <dt class="shrink-0 text-slate-400">Endpoint</dt>
                 <dd class="min-w-0 truncate text-right font-mono text-slate-200">{{ peer.endpoint }}</dd>
             </div>
         {% endif %}
 
         {% if peer.allowed_ips is defined %}
-            <div class="flex items-baseline justify-between gap-4">
+            <div class="flex items-baseline gap-4">
                 <dt class="shrink-0 text-slate-400">Allowed IPs</dt>
                 <dd class="min-w-0 truncate text-right font-mono text-slate-200">{{ peer.allowed_ips }}</dd>
             </div>
         {% endif %}
 
         {% if handshake is not empty %}
-            <div class="flex items-baseline justify-between gap-4">
+            <div class="flex items-baseline gap-4">
                 <dt class="shrink-0 text-slate-400">Latest handshake</dt>
                 <dd class="text-right text-slate-200">{{ handshake }}</dd>
             </div>
         {% endif %}
 
         {% if transfer is not empty %}
-            <div class="flex items-baseline justify-between gap-4">
+            <div class="flex items-baseline gap-4">
                 <dt class="shrink-0 text-slate-400">Transfer</dt>
                 <dd class="text-right text-slate-200">{{ transfer }}</dd>
             </div>
         {% endif %}
 
         {% if peer.persistent_keepalive is defined %}
-            <div class="flex items-baseline justify-between gap-4">
+            <div class="flex items-baseline gap-4">
                 <dt class="shrink-0 text-slate-400">Persistent keepalive</dt>
                 <dd class="text-right text-slate-200">{{ peer.persistent_keepalive }}</dd>
             </div>
         {% endif %}
 
         {% if peer.protocol_version is defined %}
-            <div class="flex items-baseline justify-between gap-4">
+            <div class="flex items-baseline gap-4">
                 <dt class="shrink-0 text-slate-400">Protocol version</dt>
                 <dd class="text-right text-slate-200">{{ peer.protocol_version }}</dd>
             </div>
         {% endif %}
 
         {% if peer.preshared_key is defined %}
-            <div class="flex items-baseline justify-between gap-4">
+            <div class="flex items-baseline gap-4">
                 <dt class="shrink-0 text-slate-400">Preshared key</dt>
                 <dd class="min-w-0 truncate text-right font-mono text-slate-400">{{ peer.preshared_key }}</dd>
             </div>
