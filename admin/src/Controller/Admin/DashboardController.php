@@ -37,7 +37,7 @@ class DashboardController extends AbstractDashboardController
     {
         return Dashboard::new()
             ->setTitle('Admin')
-            ->setFavicon('favicon.svg');
+            ->setFaviconPath('favicon.svg');
     }
 
     public function configureMenuItems(): iterable
