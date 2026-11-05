@@ -47,6 +47,10 @@ if ! is_installed composer || ! command -v composer >/dev/null 2>&1; then
     missing_packages+=(composer)
 fi
 
+if ! is_installed acl || ! command -v setfacl >/dev/null 2>&1; then
+    missing_packages+=(acl)
+fi
+
 apt-get update
 if (( ${#missing_packages[@]} > 0 )); then
     log "Installing missing packages: ${missing_packages[*]}"
@@ -127,11 +131,33 @@ fi
 [[ -d "${public_dir}" ]] || fail "Directory does not exist: ${public_dir}"
 
 public_dir="$(realpath -e -- "${public_dir}")"
+[[ "${public_dir}" != "/" ]] || fail "The filesystem root cannot be used as the public directory."
 [[ "${public_dir}" =~ ^/[A-Za-z0-9._/-]+$ ]] \
     || fail "Use a public-directory path containing only letters, numbers, dots, underscores, hyphens, and slashes."
 [[ -f "${public_dir}/index.php" ]] || fail "No index.php found in ${public_dir}."
+
+log "Granting www-data access to ${public_dir} using filesystem ACLs."
+parent_dir="$(dirname -- "${public_dir}")"
+if [[ "${parent_dir}" != "/" ]]; then
+    setfacl -m u:www-data:rx "${parent_dir}" \
+        || fail "Could not grant www-data access to the application directory ${parent_dir}."
+    parent_dir="$(dirname -- "${parent_dir}")"
+fi
+
+while [[ "${parent_dir}" != "/" ]]; do
+    setfacl -m u:www-data:x "${parent_dir}" \
+        || fail "Could not grant www-data traversal permission on ${parent_dir}."
+    parent_dir="$(dirname -- "${parent_dir}")"
+done
+
+setfacl -R -m u:www-data:rX "${public_dir}" \
+    || fail "Could not grant www-data read access to ${public_dir}."
+if ! find "${public_dir}" -type d -exec setfacl -m d:u:www-data:rx {} +; then
+    fail "Could not configure inherited www-data access under ${public_dir}."
+fi
+
 if ! runuser -u www-data -- test -r "${public_dir}/index.php"; then
-    fail "PHP-FPM runs as www-data and cannot read ${public_dir}/index.php. Check read permission on the file and execute permission on every parent directory."
+    fail "www-data still cannot read ${public_dir}/index.php after ACL setup."
 fi
 
 sites_available="/etc/nginx/sites-available"
