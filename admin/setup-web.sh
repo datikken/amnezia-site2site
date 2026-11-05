@@ -134,12 +134,47 @@ awg_binary="$(realpath -e -- "${awg_binary}")"
     || fail "Unsupported awg binary path: ${awg_binary}"
 
 log "Granting CAP_NET_ADMIN to ${awg_binary} so www-data can run 'awg show' directly."
-setcap cap_net_admin+ep "${awg_binary}" \
+
+# '=ep' (not '+ep') so the result is deterministic
+setcap cap_net_admin=ep "${awg_binary}" \
     || fail "Could not grant CAP_NET_ADMIN to ${awg_binary}."
+
 getcap "${awg_binary}" | grep -Fq 'cap_net_admin=ep' \
     || fail "CAP_NET_ADMIN was not set on ${awg_binary}."
-if ! runuser -u www-data -- "${awg_binary}" show >/dev/null; then
-    fail "Could not run 'awg show' as www-data after granting CAP_NET_ADMIN."
+
+if ! runuser -u www-data -- "${awg_binary}" show >/dev/null 2>&1; then
+    # getcap passes, but the cap doesn't survive exec — diagnose why.
+    if findmnt -no OPTIONS --target "${awg_binary}" | tr ',' '\n' | grep -qx 'nosuid'; then
+        fail "'${awg_binary}' is on a filesystem mounted with 'nosuid', \
+so file capabilities are ignored. Remount without nosuid or install the \
+binary under a non-nosuid path."
+    fi
+
+    if command -v capsh >/dev/null 2>&1; then
+        bnd="$(awk '/^CapBnd:/{print $2}' /proc/self/status)"
+        capsh --decode="${bnd}" 2>/dev/null | grep -qw cap_net_admin \
+            || fail "CAP_NET_ADMIN is not in the bounding set (typical in Docker). \
+Restart the container with --cap-add NET_ADMIN."
+    fi
+
+    # Fallback that works in every environment: a narrow sudoers rule.
+    log "setcap is ineffective here; falling back to a sudoers rule."
+    if ! command -v sudo >/dev/null 2>&1; then
+        apt-get install -y sudo >/dev/null 2>&1 \
+            || fail "sudo is required for the fallback path."
+    fi
+    printf 'www-data ALL=(root) NOPASSWD: %s show\n' "${awg_binary}" \
+        > /etc/sudoers.d/awg-show
+    chmod 0440 /etc/sudoers.d/awg-show
+    if ! visudo -cf /etc/sudoers.d/awg-show >/dev/null; then
+        rm -f /etc/sudoers.d/awg-show
+        fail "Generated sudoers rule failed validation; removed it."
+    fi
+
+    runuser -u www-data -- sudo -n "${awg_binary}" show >/dev/null 2>&1 \
+        || fail "Could not run 'awg show' as www-data even via sudo."
+
+    log "Fallback active: www-data must call 'sudo -n ${awg_binary} show'."
 fi
 
 if ! read -r -p "Absolute path to the application's public directory: " public_dir; then
