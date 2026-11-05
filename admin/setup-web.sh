@@ -130,6 +130,9 @@ public_dir="$(realpath -e -- "${public_dir}")"
 [[ "${public_dir}" =~ ^/[A-Za-z0-9._/-]+$ ]] \
     || fail "Use a public-directory path containing only letters, numbers, dots, underscores, hyphens, and slashes."
 [[ -f "${public_dir}/index.php" ]] || fail "No index.php found in ${public_dir}."
+if ! runuser -u www-data -- test -r "${public_dir}/index.php"; then
+    fail "PHP-FPM runs as www-data and cannot read ${public_dir}/index.php. Check read permission on the file and execute permission on every parent directory."
+fi
 
 sites_available="/etc/nginx/sites-available"
 sites_enabled="/etc/nginx/sites-enabled"
@@ -203,7 +206,7 @@ server {
         fastcgi_pass unix:${fpm_socket};
         fastcgi_split_path_info ^(.+\\.php)(/.*)\$;
         include fastcgi_params;
-        fastcgi_param SCRIPT_FILENAME \$document_root\$fastcgi_script_name;
+        fastcgi_param SCRIPT_FILENAME \$realpath_root\$fastcgi_script_name;
         fastcgi_param DOCUMENT_ROOT \$document_root;
         internal;
     }
