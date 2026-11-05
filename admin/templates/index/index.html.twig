@@ -3,27 +3,34 @@
 {% block title %}AmneziaWG — Peers{% endblock %}
 
 {% block body %}
-<div class="min-h-screen bg-slate-950 text-slate-100 antialiased text-lg sm:text-base">
-    <div class="w-full mx-auto px-0 py-6 sm:py-10">
+<div class="min-h-screen bg-gradient-to-b from-slate-950 via-slate-950 to-black text-slate-100 antialiased">
+    <div class="mx-auto w-full max-w-7xl px-3 py-6 sm:px-6 sm:py-10 lg:px-8">
 
-                {# ---- Header ---- #}
-        <header class="mb-6 sm:mb-8 px-4 flex items-end justify-between gap-4 flex-wrap">
-            <div>
-                <h1 class="text-3xl font-bold tracking-tight">AmneziaWG</h1>
-                <p class="text-slate-400 mt-1">Connected peers</p>
+        {# ---- Page header ---- #}
+        <header class="mb-6 flex flex-wrap items-center justify-between gap-x-4 gap-y-3 sm:mb-10">
+            <div class="flex items-center gap-3">
+                <span class="grid h-10 w-10 place-items-center rounded-xl bg-emerald-500/10 text-emerald-400 ring-1 ring-emerald-500/30">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5">
+                        <path d="M12 2 3 7v10l9 5 9-5V7z"/><path d="m3 7 9 5 9-5"/><path d="M12 12v10"/>
+                    </svg>
+                </span>
+                <div>
+                    <h1 class="text-2xl font-bold tracking-tight sm:text-3xl">AmneziaWG</h1>
+                    <p class="text-sm text-slate-400">Connected peers</p>
+                </div>
             </div>
-            <span class="inline-flex items-center gap-2 rounded-full bg-slate-800/80 px-4 py-1.5 text-sm text-slate-300 ring-1 ring-slate-700">
-                <span class="h-2 w-2 rounded-full bg-emerald-400"></span>
+            <span class="inline-flex items-center gap-2 rounded-full bg-slate-800/70 px-4 py-1.5 text-sm font-medium text-slate-300 ring-1 ring-slate-700">
+                <span class="h-2 w-2 rounded-full bg-emerald-400 shadow-[0_0_8px] shadow-emerald-400/60"></span>
                 {{ peers|length }} peer{{ peers|length == 1 ? '' : 's' }}
             </span>
         </header>
 
         {% if peers is empty %}
-                        <div class="mx-4 rounded-xl border border-slate-800 bg-slate-900/60 p-10 text-center text-slate-400">
-                No peers found on this interface.
+            <div class="rounded-2xl border border-dashed border-slate-800 bg-slate-900/40 p-12 text-center">
+                <p class="text-slate-400">No peers found on this interface.</p>
             </div>
         {% else %}
-            <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-0">
+            <div class="grid grid-cols-1 gap-px overflow-hidden rounded-2xl border border-slate-800 bg-slate-800 sm:grid-cols-2 xl:grid-cols-3">
                 {% for peer in peers %}
                     {{ include('index/_peer_card.html.twig', { peer: peer }) }}
                 {% endfor %}
@@ -33,3 +40,4 @@
     </div>
 </div>
 {% endblock %}
+
