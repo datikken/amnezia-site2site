@@ -4,7 +4,7 @@
 
 {% block body %}
 <div class="min-h-screen bg-slate-950 text-slate-100 antialiased">
-    <div class="max-w-6xl mx-auto px-4 py-10">
+    <div class="w-full max-w-3xl mx-auto px-4 sm:px-6 py-8 sm:py-10">
 
         {# ---- Header ---- #}
         <header class="mb-8 flex items-end justify-between gap-4 flex-wrap">
@@ -23,7 +23,7 @@
                 No peers found on this interface.
             </div>
         {% else %}
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+            <div class="grid grid-cols-1 gap-4 sm:gap-5">
                 {% for peer in peers %}
                     {% set handshake = peer.latest_handshake|default('') %}
                     {% set transfer = peer.transfer|default('') %}
