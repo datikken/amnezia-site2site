@@ -5,7 +5,12 @@ security:
 
     # https://symfony.com/doc/current/security.html#loading-the-user-the-user-provider
     providers:
-        users_in_memory: { memory: null }
+        users_in_memory:
+            memory:
+                users:
+                    admin:
+                        password: '$2y$13$fF4li0wjEST6OIYyx7pXVu5gSjHf01Ty3vWCyf28NfzvnJ6IpNLq6' # "admin"
+                        roles: ['ROLE_ADMIN']
 
     firewalls:
         dev:
@@ -15,6 +20,13 @@ security:
         main:
             lazy: true
             provider: users_in_memory
+            form_login:
+                login_path: admin
+                check_path: admin
+                enable_csrf: true
+            logout:
+                path: admin_logout
+                target: admin
 
             # Activate different ways to authenticate:
             # https://symfony.com/doc/current/security.html#the-firewall
@@ -24,9 +36,11 @@ security:
 
     # Note: Only the *first* matching rule is applied
     access_control:
-        # - { path: ^/admin, roles: ROLE_ADMIN }
+        # EasyAdmin renders its own login form to anonymous users on the dashboard
+        # route, so we must NOT block ^/admin here (that would cause a redirect loop).
+        # Authorization is enforced per-controller via #[IsGranted('ROLE_ADMIN')].
+        # Add rules only for other paths, e.g.:
         # - { path: ^/profile, roles: ROLE_USER }
-
 when@test:
     security:
         password_hashers:
@@ -37,3 +51,4 @@ when@test:
                 cost: 4 # Lowest possible value for bcrypt
                 time_cost: 3 # Lowest possible value for argon
                 memory_cost: 10 # Lowest possible value for argon
+

@@ -1,0 +1,26 @@
+{% extends '@EasyAdmin/page/content.html.twig' %}
+
+{% block content_title %}AmneziaWG — Peers{% endblock %}
+
+{% block page_content %}
+    <div class="mb-4 flex flex-wrap items-center justify-between gap-3">
+        <p class="text-secondary mb-0">Connected peers on this interface</p>
+        <span class="badge text-bg-success rounded-pill">{{ peers|length }} peer{{ peers|length == 1 ? '' : 's' }}</span>
+    </div>
+
+    {% if peers is empty %}
+        <div class="alert alert-secondary text-center" role="alert">
+            No peers found on this interface.
+        </div>
+    {% else %}
+        {% set desktopCols = (peers|length >= 3) ? 'col-xl-4' : (peers|length == 2 ? 'col-xl-6' : 'col-xl-12') %}
+        <div class="row g-3">
+            {% for peer in peers %}
+                <div class="col-12 col-md-6 {{ desktopCols }}">
+                    {{ include('admin/_peer_card.html.twig', { peer: peer }) }}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+{% endblock %}
+
