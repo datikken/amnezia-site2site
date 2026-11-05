@@ -94,6 +94,7 @@ done
 
 php_cli_package="php${php_version}-cli"
 php_fpm_package="php${php_version}-fpm"
+php_pgsql_package="php${php_version}-pgsql"
 packages_to_install=()
 
 if ! is_installed "${php_cli_package}"; then
@@ -104,8 +105,13 @@ if ! is_installed "${php_fpm_package}"; then
     packages_to_install+=("${php_fpm_package}")
 fi
 
+# PDO PostgreSQL driver, required by DATABASE_URL (postgresql://...).
+if ! is_installed "${php_pgsql_package}"; then
+    packages_to_install+=("${php_pgsql_package}")
+fi
+
 if (( ${#packages_to_install[@]} > 0 )); then
-    log "Installing PHP ${php_version} packages required by composer.json."
+    log "Installing PHP ${php_version} packages required by composer.json (including pgsql)."
     DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends "${packages_to_install[@]}"
 fi
 
