@@ -6,6 +6,6 @@ final class AwgShowCommand extends Command
 {
     public function getCommand(): array
     {
-        return ['awg', 'show'];
+        return ['sudo -n /usr/bin/awg show'];
     }
 }
