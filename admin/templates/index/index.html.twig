@@ -55,9 +55,10 @@
                                 </div>
                             {% endif %}
 
-                            {% if handshake is not empty %}
+                                                        {% if handshake is not empty %}
                                 <div class="flex justify-between gap-4 px-5 py-3">
                                     <dt class="text-slate-400 shrink-0">Latest handshake</dt>
+                                    <dd class="text-slate-200 text-right">{{ handshake }}</dd>
                                 </div>
                             {% endif %}
 
