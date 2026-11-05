@@ -34,7 +34,8 @@ class DashboardController extends AbstractDashboardController
     public function configureDashboard(): Dashboard
     {
         return Dashboard::new()
-            ->setTitle('Admin');
+            ->setTitle('Admin')
+            ->setFavicon('favicon.svg');
     }
 
     public function configureMenuItems(): iterable
@@ -43,3 +44,5 @@ class DashboardController extends AbstractDashboardController
         // yield MenuItem::linkTo(SomeCrudController::class, 'The Label', 'fas fa-list');
     }
 }
+
+
