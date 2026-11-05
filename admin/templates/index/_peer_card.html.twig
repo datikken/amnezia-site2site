@@ -1,0 +1,66 @@
+{% set handshake = peer.latest_handshake|default('') %}
+{% set transfer = peer.transfer|default('') %}
+
+<article class="w-full border-y border-slate-800 bg-slate-900/60 sm:rounded-xl sm:border sm:shadow-lg sm:shadow-black/20 overflow-hidden">
+    {# card header: public key #}
+    <div class="flex items-center justify-between gap-3 px-4 sm:px-5 py-4 border-b border-slate-800">
+        <div class="min-w-0">
+            <div class="text-xs uppercase tracking-wider text-slate-500 mb-0.5">Public key</div>
+            <code class="block truncate font-mono text-base text-sky-300" title="{{ peer.public_key|default('—') }}">
+                {{ peer.public_key|default('—') }}
+            </code>
+        </div>
+    </div>
+
+    {# card body: field list #}
+    <dl class="divide-y divide-slate-800/70 text-base sm:text-sm">
+        {% if peer.endpoint is defined %}
+            <div class="flex flex-col gap-1 px-4 sm:px-5 py-4 sm:py-3 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
+                <dt class="text-slate-400 shrink-0">Endpoint</dt>
+                <dd class="font-mono text-slate-200 break-all sm:text-right">{{ peer.endpoint }}</dd>
+            </div>
+        {% endif %}
+
+        {% if peer.allowed_ips is defined %}
+            <div class="flex flex-col gap-1 px-4 sm:px-5 py-4 sm:py-3 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
+                <dt class="text-slate-400 shrink-0">Allowed IPs</dt>
+                <dd class="font-mono text-slate-200 break-all sm:text-right">{{ peer.allowed_ips }}</dd>
+            </div>
+        {% endif %}
+
+        {% if handshake is not empty %}
+            <div class="flex flex-col gap-1 px-4 sm:px-5 py-4 sm:py-3 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
+                <dt class="text-slate-400 shrink-0">Latest handshake</dt>
+                <dd class="text-slate-200 sm:text-right">{{ handshake }}</dd>
+            </div>
+        {% endif %}
+
+        {% if transfer is not empty %}
+            <div class="flex flex-col gap-1 px-4 sm:px-5 py-4 sm:py-3 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
+                <dt class="text-slate-400 shrink-0">Transfer</dt>
+                <dd class="text-slate-200 sm:text-right">{{ transfer }}</dd>
+            </div>
+        {% endif %}
+
+        {% if peer.persistent_keepalive is defined %}
+            <div class="flex flex-col gap-1 px-4 sm:px-5 py-4 sm:py-3 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
+                <dt class="text-slate-400 shrink-0">Persistent keepalive</dt>
+                <dd class="text-slate-200 sm:text-right">{{ peer.persistent_keepalive }}</dd>
+            </div>
+        {% endif %}
+
+        {% if peer.protocol_version is defined %}
+            <div class="flex flex-col gap-1 px-4 sm:px-5 py-4 sm:py-3 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
+                <dt class="text-slate-400 shrink-0">Protocol version</dt>
+                <dd class="text-slate-200 sm:text-right">{{ peer.protocol_version }}</dd>
+            </div>
+        {% endif %}
+
+        {% if peer.preshared_key is defined %}
+            <div class="flex flex-col gap-1 px-4 sm:px-5 py-4 sm:py-3 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
+                <dt class="text-slate-400 shrink-0">Preshared key</dt>
+                <dd class="font-mono text-slate-400 break-all sm:text-right">{{ peer.preshared_key }}</dd>
+            </div>
+        {% endif %}
+    </dl>
+</article>

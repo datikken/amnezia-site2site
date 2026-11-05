@@ -3,11 +3,11 @@
 {% block title %}AmneziaWG — Peers{% endblock %}
 
 {% block body %}
-<div class="min-h-screen bg-slate-950 text-slate-100 antialiased">
-    <div class="w-full max-w-3xl mx-auto px-4 sm:px-6 py-8 sm:py-10">
+<div class="min-h-screen bg-slate-950 text-slate-100 antialiased text-lg sm:text-base">
+    <div class="w-full max-w-3xl mx-auto px-0 sm:px-6 py-6 sm:py-10">
 
-        {# ---- Header ---- #}
-        <header class="mb-8 flex items-end justify-between gap-4 flex-wrap">
+                {# ---- Header ---- #}
+        <header class="mb-6 sm:mb-8 px-4 sm:px-0 flex items-end justify-between gap-4 flex-wrap">
             <div>
                 <h1 class="text-3xl font-bold tracking-tight">AmneziaWG</h1>
                 <p class="text-slate-400 mt-1">Connected peers</p>
@@ -19,78 +19,13 @@
         </header>
 
         {% if peers is empty %}
-            <div class="rounded-xl border border-slate-800 bg-slate-900/60 p-10 text-center text-slate-400">
+                        <div class="mx-4 sm:mx-0 rounded-xl border border-slate-800 bg-slate-900/60 p-10 text-center text-slate-400">
                 No peers found on this interface.
             </div>
         {% else %}
-            <div class="grid grid-cols-1 gap-4 sm:gap-5">
+            <div class="grid grid-cols-1 gap-0 sm:gap-5">
                 {% for peer in peers %}
-                    {% set handshake = peer.latest_handshake|default('') %}
-                    {% set transfer = peer.transfer|default('') %}
-
-                    <article class="rounded-xl border border-slate-800 bg-slate-900/60 shadow-lg shadow-black/20 overflow-hidden">
-                        {# card header: key + status #}
-                        <div class="flex items-center justify-between gap-3 px-5 py-4 border-b border-slate-800">
-                            <div class="min-w-0">
-                                <div class="text-xs uppercase tracking-wider text-slate-500 mb-0.5">Public key</div>
-                                <code class="block truncate font-mono text-sm text-sky-300" title="{{ peer.public_key|default('—') }}">
-                                    {{ peer.public_key|default('—') }}
-                                </code>
-                            </div>
-                        </div>
-
-                        {# card body: field grid #}
-                        <dl class="divide-y divide-slate-800/70 text-sm">
-                            {% if peer.endpoint is defined %}
-                                <div class="flex justify-between gap-4 px-5 py-3">
-                                    <dt class="text-slate-400 shrink-0">Endpoint</dt>
-                                    <dd class="font-mono text-slate-200 text-right break-all">{{ peer.endpoint }}</dd>
-                                </div>
-                            {% endif %}
-
-                            {% if peer.allowed_ips is defined %}
-                                <div class="flex justify-between gap-4 px-5 py-3">
-                                    <dt class="text-slate-400 shrink-0">Allowed IPs</dt>
-                                    <dd class="font-mono text-slate-200 text-right break-all">{{ peer.allowed_ips }}</dd>
-                                </div>
-                            {% endif %}
-
-                                                        {% if handshake is not empty %}
-                                <div class="flex justify-between gap-4 px-5 py-3">
-                                    <dt class="text-slate-400 shrink-0">Latest handshake</dt>
-                                    <dd class="text-slate-200 text-right">{{ handshake }}</dd>
-                                </div>
-                            {% endif %}
-
-                            {% if transfer is not empty %}
-                                <div class="flex justify-between gap-4 px-5 py-3">
-                                    <dt class="text-slate-400 shrink-0">Transfer</dt>
-                                    <dd class="text-slate-200 text-right">{{ transfer }}</dd>
-                                </div>
-                            {% endif %}
-
-                            {% if peer.persistent_keepalive is defined %}
-                                <div class="flex justify-between gap-4 px-5 py-3">
-                                    <dt class="text-slate-400 shrink-0">Persistent keepalive</dt>
-                                    <dd class="text-slate-200 text-right">{{ peer.persistent_keepalive }}</dd>
-                                </div>
-                            {% endif %}
-
-                            {% if peer.protocol_version is defined %}
-                                <div class="flex justify-between gap-4 px-5 py-3">
-                                    <dt class="text-slate-400 shrink-0">Protocol version</dt>
-                                    <dd class="text-slate-200 text-right">{{ peer.protocol_version }}</dd>
-                                </div>
-                            {% endif %}
-
-                            {% if peer.preshared_key is defined %}
-                                <div class="flex justify-between gap-4 px-5 py-3">
-                                    <dt class="text-slate-400 shrink-0">Preshared key</dt>
-                                    <dd class="font-mono text-slate-400 text-right break-all">{{ peer.preshared_key }}</dd>
-                                </div>
-                            {% endif %}
-                        </dl>
-                    </article>
+                    {{ include('index/_peer_card.html.twig', { peer: peer }) }}
                 {% endfor %}
             </div>
         {% endif %}
