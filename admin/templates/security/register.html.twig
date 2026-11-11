@@ -1,0 +1,81 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Create account{% endblock %}
+
+{% block stylesheets %}
+<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+{% endblock %}
+
+{% block body %}
+<div class="min-h-screen bg-gradient-to-b from-slate-950 via-slate-950 to-black text-slate-100 antialiased flex items-center justify-center px-4 py-12">
+    <div class="w-full max-w-md">
+
+        {# Brand #}
+        <div class="mb-8 flex flex-col items-center text-center">
+            <span class="grid h-14 w-14 place-items-center rounded-2xl bg-emerald-500/10 text-emerald-400 ring-1 ring-emerald-500/30">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-7 w-7">
+                    <path d="M12 2 3 7v10l9 5 9-5V7z"/><path d="m3 7 9 5 9-5"/><path d="M12 12v10"/>
+                </svg>
+            </span>
+            <h1 class="mt-4 text-2xl font-bold tracking-tight">Create your account</h1>
+            <p class="mt-1 text-sm text-slate-400">Set up access to the AmneziaWG admin panel</p>
+        </div>
+
+        <div class="rounded-2xl border border-slate-800 bg-slate-900/70 p-6 shadow-xl shadow-black/30 sm:p-8">
+
+            {{ form_start(registrationForm, { attr: { class: 'space-y-5' } }) }}
+
+                {% set fieldBase = 'w-full rounded-lg border bg-slate-950/60 px-4 py-2.5 text-slate-100 placeholder-slate-500 outline-none transition focus:ring-2 focus:ring-emerald-500/30' %}
+
+                <div>
+                    {{ form_label(registrationForm.email, 'Email', { label_attr: { class: 'mb-1.5 block text-sm font-medium text-slate-300' } }) }}
+                    {{ form_widget(registrationForm.email, {
+                        attr: {
+                            class: fieldBase ~ ' border-slate-700 focus:border-emerald-500',
+                            placeholder: 'you@example.com',
+                            autocomplete: 'email'
+                        }
+                    }) }}
+                    <div class="mt-1.5 text-sm text-rose-400">{{ form_errors(registrationForm.email) }}</div>
+                </div>
+
+                <div>
+                    {{ form_label(registrationForm.plainPassword.first, 'Password', { label_attr: { class: 'mb-1.5 block text-sm font-medium text-slate-300' } }) }}
+                    {{ form_widget(registrationForm.plainPassword.first, {
+                        attr: {
+                            class: fieldBase ~ ' border-slate-700 focus:border-emerald-500',
+                            placeholder: '••••••••',
+                            autocomplete: 'new-password'
+                        }
+                    }) }}
+                </div>
+
+                <div>
+                    {{ form_label(registrationForm.plainPassword.second, 'Repeat password', { label_attr: { class: 'mb-1.5 block text-sm font-medium text-slate-300' } }) }}
+                    {{ form_widget(registrationForm.plainPassword.second, {
+                        attr: {
+                            class: fieldBase ~ ' border-slate-700 focus:border-emerald-500',
+                            placeholder: '••••••••',
+                            autocomplete: 'new-password'
+                        }
+                    }) }}
+                    <div class="mt-1.5 text-sm text-rose-400">{{ form_errors(registrationForm.plainPassword) }}</div>
+                </div>
+
+                <button
+                    type="submit"
+                    class="w-full rounded-lg bg-emerald-500 px-4 py-2.5 text-sm font-semibold text-slate-950 transition hover:bg-emerald-400 focus:outline-none focus:ring-2 focus:ring-emerald-500/50"
+                >
+                    Create account
+                </button>
+
+            {{ form_end(registrationForm) }}
+
+            <p class="mt-6 text-center text-sm text-slate-400">
+                Already have an account?
+                <a href="{{ path('app_login') }}" class="font-medium text-emerald-400 hover:text-emerald-300">Sign in</a>
+            </p>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,49 @@
+{% set handshake = peer.latest_handshake|default('') %}
+{% set transfer = peer.transfer|default('') %}
+
+<div class="card h-100 shadow-sm">
+    <div class="card-header bg-transparent">
+        <div class="text-uppercase text-muted small fw-semibold" style="letter-spacing: .08em;">Public key</div>
+        <code class="d-block text-truncate text-primary" title="{{ peer.public_key|default('—') }}">
+            {{ peer.public_key|default('—') }}
+        </code>
+    </div>
+    <div class="card-body">
+        <dl class="row mb-0 small">
+            {% if peer.endpoint is defined %}
+                <dt class="col-5 text-muted fw-normal">Endpoint</dt>
+                <dd class="col-7 text-end text-truncate mb-2"><code>{{ peer.endpoint }}</code></dd>
+            {% endif %}
+
+            {% if peer.allowed_ips is defined %}
+                <dt class="col-5 text-muted fw-normal">Allowed IPs</dt>
+                <dd class="col-7 text-end text-truncate mb-2"><code>{{ peer.allowed_ips }}</code></dd>
+            {% endif %}
+
+            {% if handshake is not empty %}
+                <dt class="col-5 text-muted fw-normal">Latest handshake</dt>
+                <dd class="col-7 text-end mb-2">{{ handshake }}</dd>
+            {% endif %}
+
+            {% if transfer is not empty %}
+                <dt class="col-5 text-muted fw-normal">Transfer</dt>
+                <dd class="col-7 text-end mb-2">{{ transfer }}</dd>
+            {% endif %}
+
+            {% if peer.persistent_keepalive is defined %}
+                <dt class="col-5 text-muted fw-normal">Persistent keepalive</dt>
+                <dd class="col-7 text-end mb-2">{{ peer.persistent_keepalive }}</dd>
+            {% endif %}
+
+            {% if peer.protocol_version is defined %}
+                <dt class="col-5 text-muted fw-normal">Protocol version</dt>
+                <dd class="col-7 text-end mb-2">{{ peer.protocol_version }}</dd>
+            {% endif %}
+
+            {% if peer.preshared_key is defined %}
+                <dt class="col-5 text-muted fw-normal">Preshared key</dt>
+                <dd class="col-7 text-end text-truncate mb-0"><code class="text-muted">{{ peer.preshared_key }}</code></dd>
+            {% endif %}
+        </dl>
+    </div>
+</div>

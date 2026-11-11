@@ -1,0 +1,273 @@
+! $$$ Agent: http/rci
+! $$$ Last change: Sat,  7 Nov 2026 17:50:37 GMT
+! $$$ Md5 checksum: c161abde8f28076edc3473200bd7a063
+! $$$ Model: Keenetic Start
+! $$$ Username: admin
+! $$$ Version: 2.06.1
+
+system
+    set net.ipv4.ip_forward 1
+    set net.ipv4.neigh.default.gc_thresh1 256
+    set net.ipv4.neigh.default.gc_thresh2 1024
+    set net.ipv4.neigh.default.gc_thresh3 2048
+    set net.ipv4.tcp_fin_timeout 30
+    set net.ipv4.tcp_keepalive_time 120
+    set net.ipv6.conf.all.forwarding 1
+    set net.ipv6.neigh.default.gc_thresh1 256
+    set net.ipv6.neigh.default.gc_thresh2 1024
+    set net.ipv6.neigh.default.gc_thresh3 2048
+    set net.netfilter.nf_conntrack_tcp_timeout_established 1200
+    set vm.overcommit_memory 0
+    set vm.swappiness 60
+    set vm.vfs_cache_pressure 1000
+    clock timezone Europe/Moscow
+    domainname WORKGROUP
+    hostname Keenetic-5816
+    caption default
+    ndss dump-report no disable
+!
+schedule schedule0
+    description "\xd0\xa0\xd0\xb0\xd1\x81\xd0\xbf\xd0\xb8\xd1\x81\xd0\xb0\xd0\xbd\xd0\xb8\xd0\xb5 \xd0\xb0\xd0\xb2\xd1\x82\xd0\xbe\xd0\xbe\xd0\xb1\xd0\xbd\xd0\xbe\xd0\xb2\xd0\xbb\xd0\xb5\xd0\xbd\xd0\xb8\xd1\x8f"
+    action start 0 1 *
+    action stop 0 6 *
+!
+known host "30:56:84:3d:65:2a - \xd0\x9e\xd1\x81\xd0\xbd\xd0\xbe\xd0\xb2\xd0\xbd\xd0\xb0\xd1\x8f - 2026-11-04 14:09" 30:56:84:3d:65:2a
+known host "DESKTOP-8IRK7JM - Home network - 2026-11-02 21:29" ac:81:12:02:64:0b
+known host "Raspi - Video" d8:3a:dd:81:a6:88
+known host Module ec:da:3b:9f:97:b3
+access-list _WEBADMIN_Wireguard0
+    permit icmp 0.0.0.0 0.0.0.0 0.0.0.0 0.0.0.0
+    permit udp 0.0.0.0 0.0.0.0 0.0.0.0 0.0.0.0
+    permit tcp 0.0.0.0 0.0.0.0 0.0.0.0 0.0.0.0
+    auto-delete
+! 
+access-list _WEBADMIN_FastEthernet0/Vlan2
+    auto-delete
+! 
+isolate-private
+user admin
+    password nt 28ae4340246f9808fb64f1d10c3e76d8
+    password md5 b4883eb7d1d668090fe63dddb4681025
+    tag cli
+    tag http
+!
+interface FastEthernet0
+    up
+!
+interface FastEthernet0/1
+    rename 1
+    switchport mode access
+    switchport access vlan 1
+    up
+!
+interface FastEthernet0/2
+    rename 2
+    switchport mode access
+    switchport access vlan 1
+    up
+!
+interface FastEthernet0/3
+    rename 3
+    switchport mode access
+    switchport access vlan 1
+    up
+!
+interface FastEthernet0/Vlan1
+    description "Home VLAN"
+    ip dhcp client dns-routes
+    up
+!
+interface FastEthernet0/Vlan2
+    rename ISP
+    description "\xd0\x9f\xd0\xbe\xd0\xb4\xd0\xba\xd0\xbb\xd1\x8e\xd1\x87\xd0\xb5\xd0\xbd\xd0\xb8\xd0\xb5 Ethernet"
+    mac address factory wan
+    security-level public
+    ip address dhcp
+    ip dhcp client dns-routes
+    ip access-group _WEBADMIN_FastEthernet0/Vlan2 in
+    ip global 700
+    igmp upstream
+    ipv6 address auto
+    ipv6 prefix auto
+    up
+!
+interface FastEthernet0/0
+    rename 0
+    role inet for ISP
+    switchport mode access
+    switchport access vlan 2
+    up
+!
+interface WifiMaster0
+    country-code RU
+    compatibility BGN
+    rekey-interval 86400
+    up
+!
+interface WifiMaster0/AccessPoint0
+    rename AccessPoint
+    description "Wi-Fi access point"
+    mac access-list type none
+    wps
+    authentication wpa-psk ns3 jg4blS4LINiUuxrKehkit3ufdvQ+DFeV75MLvWbuNINGbi2u
+    encryption enable
+    encryption wpa2
+    encryption wpa3
+    ip dhcp client dns-routes
+    ssid keenetic-e-module
+    wmm
+    rrm
+    ft mdid pw
+    ft enable
+    up
+!
+interface WifiMaster0/AccessPoint1
+    mac access-list type none
+    security-level private
+    encryption no enable
+    ip dhcp client dns-routes
+    down
+!
+interface WifiMaster0/AccessPoint2
+    mac access-list type none
+    security-level private
+    encryption no enable
+    ip dhcp client dns-routes
+    down
+!
+interface WifiMaster0/AccessPoint3
+    mac access-list type none
+    security-level private
+    encryption no enable
+    ip dhcp client dns-routes
+    down
+!
+interface WifiMaster0/AccessPoint4
+    mac access-list type none
+    security-level private
+    encryption no enable
+    ip dhcp client dns-routes
+    down
+!
+interface WifiMaster0/AccessPoint5
+    mac access-list type none
+    security-level private
+    encryption no enable
+    ip dhcp client dns-routes
+    down
+!
+interface WifiMaster0/AccessPoint6
+    mac access-list type none
+    security-level private
+    encryption no enable
+    ip dhcp client dns-routes
+    down
+!
+interface WifiMaster0/WifiStation0
+    security-level public
+    encryption no enable
+    ip dhcp client dns-routes
+    standby enable
+    standby timeout 600
+    down
+!
+interface Bridge0
+    rename Home
+    description "\xd0\x9e\xd1\x81\xd0\xbd\xd0\xbe\xd0\xb2\xd0\xbd\xd0\xb0\xd1\x8f"
+    include FastEthernet0/Vlan1
+    include AccessPoint
+    mac address factory lan
+    mac access-list type none
+    security-level private
+    ip address 192.168.66.1 255.255.255.0
+    ip dhcp client dns-routes
+    igmp downstream
+    iapp key ns3 RFdxDtX0EZSD9NoprRQw/rRaIeihRp4AB8unCm7NxjJeYHfa
+    up
+!
+interface Wireguard0
+    description site_e
+    security-level public
+    ip address 10.9.9.8 255.255.255.255
+    ip mtu 1280
+    ip access-group _WEBADMIN_Wireguard0 in
+    ip tcp adjust-mss pmtu
+    wireguard asc 3 40 100 18 78 246489850-301993439 482062957-898791665 1097909626-1327664614 1484166245-1600095834 44 5 "<r 2><b 0x858000010002000000001d><rc 29><b 0x0463646e730669636c6f756403636f6d0000010001c00c000100010000038400049f005049c00c00010001000003840004bab86e3e>" "" "" "" ""
+    wireguard peer Udw9Kyimh5UpoJpo5ZW8lUlTg8NbojuygEbJ18di1Dg=
+        endpoint 185.219.43.239:39743
+        keepalive-interval 33
+        allow-ips 10.9.9.0 255.255.255.0
+        allow-ips 192.168.55.0 255.255.255.0
+        connect
+    !
+    up
+!
+ip route 10.9.9.0 255.255.255.0 Wireguard0
+ip route 192.168.55.0 255.255.255.0 Wireguard0
+ip dhcp pool _WEBADMIN
+    range 192.168.66.33 192.168.66.152
+    lease 25200
+    bind Home
+    enable
+!
+ip dhcp pool _WEBADMIN_GUEST_AP
+    enable
+!
+ip dhcp host ec:da:3b:9f:97:b3 192.168.66.11
+ip name-server 1.1.1.1 "" on Wireguard0
+ip name-server 1.0.0.1 "" on Wireguard0
+ip http security-level public ssl
+ip http lockout-policy 5 15 3
+ip http ssl enable
+ip conntrack max-entries 8192
+ip nat Home
+ip telnet
+    security-level private
+    lockout-policy 5 15 3
+!
+ip hotspot
+    policy Home permit
+    host ac:81:12:02:64:0b permit
+    host ac:81:12:02:64:0b conform
+    host ec:da:3b:9f:97:b3 permit
+    host ec:da:3b:9f:97:b3 priority 1
+    host d8:3a:dd:81:a6:88 permit
+    host d8:3a:dd:81:a6:88 conform
+    host d8:3a:dd:81:a6:88 priority 4
+    host 30:56:84:3d:65:2a permit
+    host 30:56:84:3d:65:2a conform
+!
+ipv6 local-prefix default
+ppe software
+upnp lan Home
+crypto engine hardware
+service dhcp
+service dns-proxy
+service igmp-proxy
+service http
+service telnet
+service ntp
+service upnp
+dns-proxy
+    rebind-protect auto
+!
+mws wlan DEFAULT__
+    band 0
+    bind Home
+    ssid name keenetic-e-module
+    encryption wpa2+3
+    wpa psk ns3 jg4blS4LINiUuxrKehkit3ufdvQ+DFeV75MLvWbuNINGbi2u
+    wps enable
+    rrm enable
+    ft mdid pw
+    ft enable
+    ft iapp key ns3 RFdxDtX0EZSD9NoprRQw/rRaIeihRp4AB8unCm7NxjJeYHfa
+    band-steering enable
+    enable
+!
+easyconfig disable
+components
+    auto-update schedule schedule0
+!
+cloud control2 security-level public
+!

@@ -1,0 +1,41 @@
+# OS
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Local code-intelligence cache
+.serena/
+
+# Temp
+*.tmp
+*.bak
+*.orig
+
+# Logs
+*.log
+
+# Runtime
+*.lock
+*.pid
+
+# Build artifacts
+output/
+*.deb
+*.sha256
+
+# Secrets
+.env
+.env.*
+
+# Signing: the minisign offline secret key must never be committed. The signing/
+# directory itself is intentionally NOT ignored - Option B lands *.minisig there
+# in the tagged commit (see docs/SIGNING_DESIGN.md).
+*.key
+.playwright-cli/
